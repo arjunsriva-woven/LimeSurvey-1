@@ -19,23 +19,7 @@ use SurveyLanguageSetting;
 class QuickTranslation
 {
     /** @var Survey the survey */
-    private $survey;
-
-    /** @var array tab names */
-    private $tab_names = [
-        "title",
-        "welcome",
-        "group",
-        "question",
-        "subquestion",
-        "answer",
-        "emailinvite",
-        "emailreminder",
-        "emailconfirmation",
-        "emailregistration",
-        "emailbasicadminnotification",
-        "emaildetailedadminnotification"
-    ];
+    private Survey $survey;
 
     /**
      * Quicktranslation constructor.
@@ -43,7 +27,7 @@ class QuickTranslation
      * @param Survey $survey the survey object
      *
      */
-    public function __construct($survey)
+    public function __construct(Survey $survey)
     {
         $this->survey = $survey;
     }
@@ -153,14 +137,10 @@ class QuickTranslation
                 return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang), array('surveyls_email_remind_subj' => $new));
             case 'emailreminderbody':
                 return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang), array('surveyls_email_remind' => $new));
-
-
             case 'emailconfirmation':
                 return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang), array('surveyls_email_confirm_subj' => $new));
             case 'emailconfirmationbody':
                 return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang), array('surveyls_email_confirm' => $new));
-
-
             case 'emailregistration':
                 return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang), array('surveyls_email_register_subj' => $new));
             case 'emailregistrationbody':
@@ -173,18 +153,10 @@ class QuickTranslation
                 return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang), array('email_admin_responses_subj' => $new));
             case 'emaildetailedadminnotificationbody':
                 return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang), array('email_admin_responses' => $new));
-
-            //todo: these two seem to be twice
-            case 'email_confirm':
-                return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang), array('surveyls_email_confirm_subject' => $new));
-            case 'email_confirmbody':
-                return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang), array('surveyls_email_confirm' => $new));
-
             case 'group': //todo: here id1 = groupid
                 return QuestionGroupL10n::model()->updateAll(array('group_name' => mb_substr($new, 0, 100)), 'gid = :gid and language = :language', array(':gid' => $id1, ':language' => $tolang));
             case 'group_desc':
                 return QuestionGroupL10n::model()->updateAll(array('description' => $new), 'gid = :gid and language = :language', array(':gid' => $id1, ':language' => $tolang));
-
             case 'question': //todo: here id1 = questionid
                 return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language', array(':qid' => $id1, ':language' => $tolang));
             case 'question_help':
@@ -204,15 +176,15 @@ class QuickTranslation
      * This array structure is the base for the whole algorithm.
      * Each returned array consists of the following information
      *
-     *  type -->
+     *  type -->  this seems to be the db table in types (e.g. 1 --> surveys_languagesettings etc.)
      *  dbColumn  -->  the name of the db column where to find the
      *  id1  -->
      *  id2  -->
      *  gid  -->
      *  qid  -->
-     *  description -->
-     *  HTMLeditorType -->
-     *  HTMLeditorDisplay -->
+     *  description -->  the tab title
+     *  HTMLeditorType -->  parameter for CKEditor
+     *  HTMLeditorDisplay --> inline, modal for CKEditor to load it
      *  associated --> the associated field for the current one. If empty string this one has no associated field
      *
      * @param string $type Type of database field that is being translated, e.g. title, question, etc.
@@ -225,7 +197,7 @@ class QuickTranslation
         switch ($type) {
             case 'title':
                 $aData = array(
-                    'type' => 1,  //todo: what is this good for?
+                    //'type' => 1,
                     'dbColumn' => 'surveyls_title',
                     'id1' => '', //todo: description... what is id1?
                     'id2' => '', //todo: description... what is id2?
@@ -490,36 +462,6 @@ class QuickTranslation
                     'description' => gT("Registration email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "Modal",
-                    'associated' => ""
-                );
-                break;
-
-            case 'email_confirm':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_confirm_subj',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => false,
-                    'qid' => false,
-                    'description' => gT("Confirmation email"),
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
-                    'associated' => "email_confirmbody"
-                );
-                break;
-
-            case 'email_confirmbody':
-                $aData = array(
-                    'type' => 1,
-                    'dbColumn' => 'surveyls_email_confirm',
-                    'id1' => '',
-                    'id2' => '',
-                    'gid' => false,
-                    'qid' => false,
-                    'description' => gT("Confirmation email"),
-                    'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
                     'associated' => ""
                 );
                 break;

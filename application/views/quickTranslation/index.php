@@ -19,7 +19,7 @@
             );
             ?>
             <!-- select box for languages 'class' => 'form-group' -->
-            <div class="from-group">
+            <div class="form-group">
                 <?php
                 echo CHtml::tag('label', array('for' => 'translationlanguage', 'class' => 'control-label'), gT("Translate to") . ":");
                 echo CHtml::openTag(
@@ -53,9 +53,12 @@
                         $tolangtext
                     );
                 }
+                echo CHtml::closeTag('select');
                 ?>
             </div>
-            </form>
+            <?php
+                echo CHtml::endForm();
+            ?>
         </div>
     </div>
 
@@ -72,7 +75,4 @@
 
     </div>
 
-
-
 </div> <!-- close div sidebody -->
-<?php

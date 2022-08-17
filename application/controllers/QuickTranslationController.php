@@ -162,7 +162,7 @@ class QuickTranslationController extends LSBaseController
     }
 
     /**
-     *
+     * Collecting database data and ckeditor data for the views.
      *
      * @param $quickTranslation \LimeSurvey\Models\Services\QuickTranslation the quick translation object
      * @param $tolang string language to translate to
@@ -187,7 +187,7 @@ class QuickTranslationController extends LSBaseController
         //This is for the tab navbar
         $tabsViewData['amTypeOptions'] = $quickTranslation->getAllTranslateFields();
 
-        //this array will contain all necessary data for translatetabs_view
+        //this array will contain all necessary data for the views
         /*
          * structure will be like
          *
@@ -352,6 +352,7 @@ class QuickTranslationController extends LSBaseController
     }
 
     /**
+     * It loads the correct editor mode (inline, popup, modal).
      * This is used in the view file translateFieldData.
      *
      * @param $htmleditor
@@ -407,8 +408,12 @@ class QuickTranslationController extends LSBaseController
         // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin right can post
         /* No Permission check on survey, seems unneded (return a josn with current string posted */
 
-        //todo: check permission
         //todo: check if googletranslate is activated ...
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
+            throw new CHttpException(401, "401 Unauthorized");
+        }
+
+
         if (Yii::app()->request->isPostRequest) {
             echo self::translateGoogleApi();
         }

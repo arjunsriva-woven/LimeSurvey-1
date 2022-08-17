@@ -10,7 +10,7 @@ extract($tabData);
 
 <div id='tab-<?php echo $type; ?>' class='tab-pane fade in <?php if ($activeTab) {
     echo "active";
-} ?>'>
+             } ?>'>
     <?php
     Yii::app()->loadHelper('admin.htmleditor');
     echo PrepareEditorScript(true, Yii::app()->getController());
@@ -57,12 +57,12 @@ extract($tabData);
         </table>
 
     </div>
-    <?php if ($all_fields_empty): ?>
+    <?php if ($singleTabFieldsData[0]['all_fields_empty']) : ?>
         <p><?php eT("Nothing to translate on this page"); ?></p><br/>
     <?php endif; ?>
-    <input type='hidden' name='<?php echo $type; ?>_size' value='<?php echo $i ?>'/>
-    <?php if ($associated) : ?>
-        <input type='hidden' name='<?php echo $type2; ?>_size' value='<?php echo $i; ?>'/>
+    <input type='hidden' name='<?php echo $type; ?>_size' value='<?php echo $singleTabFieldsData[0]['fieldData']['i']; ?>'/>
+    <?php if ($singleTabFieldsData[0]['fieldData']['associated']) : ?>
+        <input type='hidden' name='<?php echo $singleTabFieldsData[0]['fieldData']['type2']; ?>_size' value='<?php echo $singleTabFieldsData[0]['fieldData']['i']; ?>'/>
     <?php endif; ?>
 </div>
 

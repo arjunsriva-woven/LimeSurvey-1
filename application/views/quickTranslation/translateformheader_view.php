@@ -57,5 +57,5 @@ extract($viewData);
     </p>
 </div>
 <?php
-    echo CHtml::closeTag('form');
+    echo CHtml::endForm();
 ?>

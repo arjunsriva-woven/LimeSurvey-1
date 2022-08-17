@@ -990,7 +990,7 @@ class Translate extends SurveyCommonAction
 
     /**
      * @param $htmleditor
-     * @param string[] $aData
+     * @param string[] $aData  will be passed to one of the functions
      * @return mixed
      */
     private function loadEditor($htmleditor, $aData)
