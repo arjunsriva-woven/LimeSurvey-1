@@ -197,7 +197,6 @@ class QuickTranslation
         switch ($type) {
             case 'title':
                 $aData = array(
-                    //'type' => 1,
                     'dbColumn' => 'surveyls_title',
                     'id1' => '', //todo: description... what is id1?
                     'id2' => '', //todo: description... what is id2?
@@ -212,7 +211,6 @@ class QuickTranslation
 
             case 'description':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_description',
                     'id1' => '',
                     'id2' => '',
@@ -227,7 +225,6 @@ class QuickTranslation
 
             case 'welcome':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_welcometext',
                     'id1' => '',
                     'id2' => '',
@@ -242,7 +239,6 @@ class QuickTranslation
 
             case 'end':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_endtext',
                     'id1' => '',
                     'id2' => '',
@@ -257,7 +253,6 @@ class QuickTranslation
 
             case 'group':
                 $aData = array(
-                    'type' => 2,
                     'dbColumn' => 'group_name',
                     'id1' => 'gid',
                     'id2' => '',
@@ -272,7 +267,6 @@ class QuickTranslation
 
             case 'group_desc':
                 $aData = array(
-                    'type' => 2,
                     'dbColumn' => 'description',
                     'id1' => 'gid',
                     'id2' => '',
@@ -287,7 +281,6 @@ class QuickTranslation
 
             case 'question':
                 $aData = array(
-                    'type' => 3,
                     'dbColumn' => 'question',
                     'id1' => 'qid',
                     'id2' => '',
@@ -302,7 +295,6 @@ class QuickTranslation
 
             case 'question_help':
                 $aData = array(
-                    'type' => 3,
                     'dbColumn' => 'help',
                     'id1' => 'qid',
                     'id2' => '',
@@ -317,7 +309,6 @@ class QuickTranslation
 
             case 'subquestion':
                 $aData = array(
-                    'type' => 4,
                     'dbColumn' => 'question',
                     'id1' => 'qid',
                     'id2' => '',
@@ -330,9 +321,8 @@ class QuickTranslation
                 );
                 break;
 
-            case 'answer': // TODO not touched
+            case 'answer':
                 $aData = array(
-                    'type' => 5,
                     'dbColumn' => 'answer',
                     'id1' => 'qid',
                     'id2' => 'code',
@@ -348,7 +338,6 @@ class QuickTranslation
 
             case 'emailinvite':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_email_invite_subj',
                     'id1' => '',
                     'id2' => '',
@@ -363,7 +352,6 @@ class QuickTranslation
 
             case 'emailinvitebody':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_email_invite',
                     'id1' => '',
                     'id2' => '',
@@ -378,7 +366,6 @@ class QuickTranslation
 
             case 'emailreminder':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_email_remind_subj',
                     'id1' => '',
                     'id2' => '',
@@ -393,7 +380,6 @@ class QuickTranslation
 
             case 'emailreminderbody':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_email_remind',
                     'id1' => '',
                     'id2' => '',
@@ -408,7 +394,6 @@ class QuickTranslation
 
             case 'emailconfirmation':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_email_confirm_subj',
                     'id1' => '',
                     'id2' => '',
@@ -423,7 +408,6 @@ class QuickTranslation
 
             case 'emailconfirmationbody':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_email_confirm',
                     'id1' => '',
                     'id2' => '',
@@ -438,7 +422,6 @@ class QuickTranslation
 
             case 'emailregistration':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_email_register_subj',
                     'id1' => '',
                     'id2' => '',
@@ -453,7 +436,6 @@ class QuickTranslation
 
             case 'emailregistrationbody':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'surveyls_email_register',
                     'id1' => '',
                     'id2' => '',
@@ -468,7 +450,6 @@ class QuickTranslation
 
             case 'emailbasicadminnotification':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'email_admin_notification_subj',
                     'id1' => '',
                     'id2' => '',
@@ -483,7 +464,6 @@ class QuickTranslation
 
             case 'emailbasicadminnotificationbody':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'email_admin_notification',
                     'id1' => '',
                     'id2' => '',
@@ -498,7 +478,6 @@ class QuickTranslation
 
             case 'emaildetailedadminnotification':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'email_admin_responses_subj',
                     'id1' => '',
                     'id2' => '',
@@ -513,7 +492,6 @@ class QuickTranslation
 
             case 'emaildetailedadminnotificationbody':
                 $aData = array(
-                    'type' => 1,
                     'dbColumn' => 'email_admin_responses',
                     'id1' => '',
                     'id2' => '',
