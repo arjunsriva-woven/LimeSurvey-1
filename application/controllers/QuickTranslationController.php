@@ -150,10 +150,10 @@ class QuickTranslationController extends LSBaseController
 
                     // check if the new value is different from old, and then update database
                     if ($new != $old) {
-                        $id1 = Yii::app()->getRequest()->getPost("{$type}_id1_{$i}");
-                        $id2 = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
+                        $qidOrGid = Yii::app()->getRequest()->getPost("{$type}_id1_{$i}");
+                        $answerCode = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
                         $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
-                        $quickTranslation->updateTranslations($type, $tolang, $new, $id1, $id2, $iScaleID);
+                        $quickTranslation->updateTranslations($type, $tolang, $new, $qidOrGid, $answerCode, $iScaleID);
                     }
                 }
                 $i++;
@@ -255,6 +255,7 @@ class QuickTranslationController extends LSBaseController
                     $aResultTo2 = !empty($type2) ? $oResultTo2->questionl10ns[$tolang]->getAttributes() : $aResultTo;
                 } elseif ($class == 'Answer') {
                     $aRowfrom = $oRowfrom->answerl10ns[$baselang]->getAttributes();
+                    $aRowfrom['question_title'] = $oRowfrom->question->title; ///this is the question code
                     $aResultBase2 = !empty($type2) ? $oResultBase2->answerl10ns[$baselang]->getAttributes() : $aRowfrom;
                     $aResultTo = $oResultTo->answerl10ns[$tolang]->getAttributes();
                     $aResultTo2 = !empty($type2) ? $oResultTo2->answerl10ns[$tolang]->getAttributes() : $aResultTo;
@@ -412,8 +413,6 @@ class QuickTranslationController extends LSBaseController
         if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");
         }
-
-
         if (Yii::app()->request->isPostRequest) {
             echo self::translateGoogleApi();
         }

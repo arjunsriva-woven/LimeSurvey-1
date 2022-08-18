@@ -10,7 +10,7 @@ extract($tabData);
 
 <div id='tab-<?php echo $type; ?>' class='tab-pane fade in <?php if ($activeTab) {
     echo "active";
-             } ?>'>
+} ?>'>
     <?php
     Yii::app()->loadHelper('admin.htmleditor');
     echo PrepareEditorScript(true, Yii::app()->getController());
@@ -29,8 +29,13 @@ extract($tabData);
         ?>
         <table class='table table-striped'>
             <thead>
-            <?php if ($threeRows) { ?>
-                <th class="col-md-2 text-strong"> <?= gT('Question code / ID') ?></th>
+
+            <?php
+            if ($type == 'answer') { ?>
+                <th class="col-md-2 text-strong"> <?= gT('QCode / Answer Code / ID') ?> </th>
+                <?php
+            } elseif ($threeRows) { ?>
+                <th class="col-md-2 text-strong"> <?= gT('Question code / ID') ?> </th>
                 <?php
             }
             $cssClass = $threeRows ? "col-sm-5 text-strong" : "col-sm-6";
@@ -60,9 +65,10 @@ extract($tabData);
     <?php if ($singleTabFieldsData[0]['all_fields_empty']) : ?>
         <p><?php eT("Nothing to translate on this page"); ?></p><br/>
     <?php endif; ?>
-    <input type='hidden' name='<?php echo $type; ?>_size' value='<?php echo $singleTabFieldsData[0]['fieldData']['i']; ?>'/>
+    <input type='hidden' name='<?php echo $type; ?>_size' value='<?php echo count($singleTabFieldsData) - 1; ?>'/>
     <?php if ($singleTabFieldsData[0]['fieldData']['associated']) : ?>
-        <input type='hidden' name='<?php echo $singleTabFieldsData[0]['fieldData']['type2']; ?>_size' value='<?php echo $singleTabFieldsData[0]['fieldData']['i']; ?>'/>
+        <input type='hidden' name='<?php echo $singleTabFieldsData[0]['fieldData']['type2']; ?>_size'
+               value='<?= count($singleTabFieldsData) - 1; ?>'/>
     <?php endif; ?>
 </div>
 

@@ -12,7 +12,7 @@ use Survey;
 use SurveyLanguageSetting;
 
 /**
- * This class is responsible for quick translation and  all DB actions needed.
+ * This class is responsible for quick translation and all DB actions needed.
  *
  *
  */
@@ -33,7 +33,8 @@ class QuickTranslation
     }
 
     /**
-     * This function gets the translation for a specific type. Different types need different query.
+     * This function gets the translation for a specific type.
+     * Different types need different query.
      *
      * @param $type
      * @param $baselang
@@ -112,13 +113,13 @@ class QuickTranslation
      * @param $fieldName  string the field name from frontend
      * @param $tolang string shortcut for language (e.g. 'de')
      * @param $new   string the new value to save as translation
-     * @param $id1 int  groupid or questionid
+     * @param $qidOrgid int  groupid or questionid
      * @param $answerCode string the answer code
      * @param $iScaleID
      *
      * @return int|null
      */
-    public function updateTranslations($fieldName, $tolang, $new, $id1 = 0, $answerCode = '', $iScaleID = '')
+    public function updateTranslations($fieldName, $tolang, $new, $qidOrgid = 0, $answerCode = '', $iScaleID = '')
     {
         switch ($fieldName) {
             case 'title':
@@ -154,17 +155,17 @@ class QuickTranslation
             case 'emaildetailedadminnotificationbody':
                 return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang), array('email_admin_responses' => $new));
             case 'group': //todo: here id1 = groupid
-                return QuestionGroupL10n::model()->updateAll(array('group_name' => mb_substr($new, 0, 100)), 'gid = :gid and language = :language', array(':gid' => $id1, ':language' => $tolang));
+                return QuestionGroupL10n::model()->updateAll(array('group_name' => mb_substr($new, 0, 100)), 'gid = :gid and language = :language', array(':gid' => $qidOrgid, ':language' => $tolang));
             case 'group_desc':
-                return QuestionGroupL10n::model()->updateAll(array('description' => $new), 'gid = :gid and language = :language', array(':gid' => $id1, ':language' => $tolang));
+                return QuestionGroupL10n::model()->updateAll(array('description' => $new), 'gid = :gid and language = :language', array(':gid' => $qidOrgid, ':language' => $tolang));
             case 'question': //todo: here id1 = questionid
-                return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language', array(':qid' => $id1, ':language' => $tolang));
+                return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language', array(':qid' => $qidOrgid, ':language' => $tolang));
             case 'question_help':
-                return QuestionL10n::model()->updateAll(array('help' => $new), 'qid = :qid and language = :language', array(':qid' => $id1, ':language' => $tolang));
+                return QuestionL10n::model()->updateAll(array('help' => $new), 'qid = :qid and language = :language', array(':qid' => $qidOrgid, ':language' => $tolang));
             case 'subquestion':
-                return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language', array(':qid' => $id1, ':language' => $tolang));
+                return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language', array(':qid' => $qidOrgid, ':language' => $tolang));
             case 'answer':
-                $oAnswer = Answer::model()->find('qid = :qid and code = :code and scale_id = :scale_id', array(':qid' => $id1, ':code' => $answerCode, ':scale_id' => $iScaleID));
+                $oAnswer = Answer::model()->find('qid = :qid and code = :code and scale_id = :scale_id', array(':qid' => $qidOrgid, ':code' => $answerCode, ':scale_id' => $iScaleID));
                 return AnswerL10n::model()->updateAll(array('answer' => $new), 'aid = :aid and language = :language', array(':aid' => $oAnswer->aid, ':language' => $tolang));
             default:
                 return null;
@@ -197,9 +198,10 @@ class QuickTranslation
         switch ($type) {
             case 'title':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_title',
-                    'id1' => '', //todo: description... what is id1?
-                    'id2' => '', //todo: description... what is id2?
+                    'id1' => '',
+                    'id2' => '',
                     'gid' => false,  //boolean value to indicate if used or not
                     'qid' => false,  //boolean value to indicate if used or not
                     'description' => gT("Survey title and description"), //this is the tab title
@@ -211,6 +213,7 @@ class QuickTranslation
 
             case 'description':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_description',
                     'id1' => '',
                     'id2' => '',
@@ -225,6 +228,7 @@ class QuickTranslation
 
             case 'welcome':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_welcometext',
                     'id1' => '',
                     'id2' => '',
@@ -239,6 +243,7 @@ class QuickTranslation
 
             case 'end':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_endtext',
                     'id1' => '',
                     'id2' => '',
@@ -253,6 +258,7 @@ class QuickTranslation
 
             case 'group':
                 $aData = array(
+                    'type' => 2,
                     'dbColumn' => 'group_name',
                     'id1' => 'gid',
                     'id2' => '',
@@ -267,6 +273,7 @@ class QuickTranslation
 
             case 'group_desc':
                 $aData = array(
+                    'type' => 2,
                     'dbColumn' => 'description',
                     'id1' => 'gid',
                     'id2' => '',
@@ -281,6 +288,7 @@ class QuickTranslation
 
             case 'question':
                 $aData = array(
+                    'type' => 3,
                     'dbColumn' => 'question',
                     'id1' => 'qid',
                     'id2' => '',
@@ -295,6 +303,7 @@ class QuickTranslation
 
             case 'question_help':
                 $aData = array(
+                    'type' => 3,
                     'dbColumn' => 'help',
                     'id1' => 'qid',
                     'id2' => '',
@@ -309,6 +318,7 @@ class QuickTranslation
 
             case 'subquestion':
                 $aData = array(
+                    'type' => 4,
                     'dbColumn' => 'question',
                     'id1' => 'qid',
                     'id2' => '',
@@ -323,6 +333,7 @@ class QuickTranslation
 
             case 'answer':
                 $aData = array(
+                    'type' => 5,
                     'dbColumn' => 'answer',
                     'id1' => 'qid',
                     'id2' => 'code',
@@ -338,6 +349,7 @@ class QuickTranslation
 
             case 'emailinvite':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_email_invite_subj',
                     'id1' => '',
                     'id2' => '',
@@ -352,6 +364,7 @@ class QuickTranslation
 
             case 'emailinvitebody':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_email_invite',
                     'id1' => '',
                     'id2' => '',
@@ -366,6 +379,7 @@ class QuickTranslation
 
             case 'emailreminder':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_email_remind_subj',
                     'id1' => '',
                     'id2' => '',
@@ -380,6 +394,7 @@ class QuickTranslation
 
             case 'emailreminderbody':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_email_remind',
                     'id1' => '',
                     'id2' => '',
@@ -394,6 +409,7 @@ class QuickTranslation
 
             case 'emailconfirmation':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_email_confirm_subj',
                     'id1' => '',
                     'id2' => '',
@@ -408,6 +424,7 @@ class QuickTranslation
 
             case 'emailconfirmationbody':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_email_confirm',
                     'id1' => '',
                     'id2' => '',
@@ -422,6 +439,7 @@ class QuickTranslation
 
             case 'emailregistration':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_email_register_subj',
                     'id1' => '',
                     'id2' => '',
@@ -436,6 +454,7 @@ class QuickTranslation
 
             case 'emailregistrationbody':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'surveyls_email_register',
                     'id1' => '',
                     'id2' => '',
@@ -450,6 +469,7 @@ class QuickTranslation
 
             case 'emailbasicadminnotification':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'email_admin_notification_subj',
                     'id1' => '',
                     'id2' => '',
@@ -464,6 +484,7 @@ class QuickTranslation
 
             case 'emailbasicadminnotificationbody':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'email_admin_notification',
                     'id1' => '',
                     'id2' => '',
@@ -478,6 +499,7 @@ class QuickTranslation
 
             case 'emaildetailedadminnotification':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'email_admin_responses_subj',
                     'id1' => '',
                     'id2' => '',
@@ -492,6 +514,7 @@ class QuickTranslation
 
             case 'emaildetailedadminnotificationbody':
                 $aData = array(
+                    'type' => 1,
                     'dbColumn' => 'email_admin_responses',
                     'id1' => '',
                     'id2' => '',
