@@ -531,7 +531,8 @@ class QuickTranslation
     }
 
     /**
-     *
+     * Get all single array elements from setupTranslateFields() in one array
+     * which are in getTabNames().
      *
      * @return array
      */
