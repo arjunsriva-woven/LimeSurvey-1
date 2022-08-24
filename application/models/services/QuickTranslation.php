@@ -19,7 +19,7 @@ use SurveyLanguageSetting;
 class QuickTranslation
 {
     /** @var Survey the survey */
-    private Survey $survey;
+    private $survey;
 
     /**
      * Quicktranslation constructor.
