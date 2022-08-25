@@ -406,7 +406,7 @@ class QuickTranslation
     public function updateTranslations($fieldName, $tolang, $new, $qidOrgid = 0, $answerCode = '', $iScaleID = '')
     {
         // Small helper function to reduce code size.
-        $updateLanguageSetting = function (array $data) {
+        $updateLanguageSetting = function (array $data) use ($tolang) {
             return SurveyLanguageSetting::model()->updateByPk(
                 ['surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang],
                 $data
