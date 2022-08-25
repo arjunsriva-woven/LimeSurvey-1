@@ -13,6 +13,9 @@ use SurveyLanguageSetting;
 
 /**
  * This class is responsible for quick translation and all DB actions needed.
+ *
+ * @todo All the swithc-statements could be remade using OOP instead.
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class QuickTranslation
 {
@@ -409,7 +412,6 @@ class QuickTranslation
                 $data
             );
         };
-
         switch ($fieldName) {
             case 'title':
                 return $updateLanguageSetting(array('surveyls_title' => substr($new, 0, 200)));
