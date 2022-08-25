@@ -2,8 +2,6 @@
 
 class QuickTranslationController extends LSBaseController
 {
-
-
     /**
      * Here we have to use the correct layout (NOT main.php)
      *
@@ -473,5 +471,4 @@ class QuickTranslationController extends LSBaseController
         header('Content-type: application/json');
         return ls_json_encode($aOutput);
     }
-
 }
