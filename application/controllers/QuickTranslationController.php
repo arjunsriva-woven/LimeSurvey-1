@@ -275,8 +275,9 @@ class QuickTranslationController extends LSBaseController
                 $qid = ($amTypeOptions["qid"] == true) ? $aRowfrom['qid'] : null;
 
                 $textform_length = strlen(trim($textfrom));
+                $textfrom2_length = $associated ? strlen(trim($textfrom2)) : 0;
 
-                $singleTabFieldsData['all_fields_empty'] = !($textform_length > 0);
+                $singleTabFieldsData['all_fields_empty'] = ($textform_length == 0) && ($textfrom2_length == 0);
 
                 $singleTabFieldsData['fieldData'] = array(
                     'textfrom' => $this->cleanup($textfrom),
