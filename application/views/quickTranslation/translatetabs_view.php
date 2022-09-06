@@ -10,7 +10,7 @@ extract($tabData);
 
 <div id='tab-<?php echo $type; ?>' class='tab-pane fade in <?php if ($activeTab) {
     echo "active";
-             } ?>'>
+} ?>'>
     <?php
     Yii::app()->loadHelper('admin.htmleditor');
     echo PrepareEditorScript(true, Yii::app()->getController());
@@ -47,28 +47,35 @@ extract($tabData);
             <?php
             //table content should be rendered here translatefields_view
             //content of translatefields_view
-            foreach ($singleTabFieldsData as $fieldData) {
-                $textfrom = $fieldData['fieldData']['textfrom'];
-                $textfrom2 = $fieldData['fieldData']['textfrom2'];
-                foreach ($fieldData['translateFields'] as $field) {
-                    if (strlen(trim((string)$field['textfrom'])) > 0) {
-                        $this->renderPartial('translateFieldData', $field);
-                    } else { ?>
-                        <input type='hidden' name='<?php echo $type; ?>_newvalue[<?php echo $field['j']; ?>]'
-                               value='<?php echo $field['textto']; ?>'/>
-                    <?php }
+            if (isset($singleTabFieldsData)) {
+                foreach ($singleTabFieldsData as $fieldData) {
+                    $textfrom = $fieldData['fieldData']['textfrom'];
+                    $textfrom2 = $fieldData['fieldData']['textfrom2'];
+                    foreach ($fieldData['translateFields'] as $field) {
+                        if (strlen(trim((string)$field['textfrom'])) > 0) {
+                            $this->renderPartial('translateFieldData', $field);
+                        } else { ?>
+                            <input type='hidden' name='<?php echo $type; ?>_newvalue[<?php echo $field['j']; ?>]'
+                                   value='<?php echo $field['textto']; ?>'/>
+                        <?php }
+                    }
                 }
             } ?>
         </table>
     </div>
-    <?php if ($singleTabFieldsData[0]['all_fields_empty']) : ?>
+    <?php
+    if (isset($singleTabFieldsData)) {
+        if ($singleTabFieldsData[0]['all_fields_empty']) : ?>
+            <p><?php eT("Nothing to translate on this page"); ?></p><br/>
+        <?php endif; ?>
+        <input type='hidden' name='<?php echo $type; ?>_size' value='<?php echo count($singleTabFieldsData) - 1; ?>'/>
+        <?php if ($singleTabFieldsData[0]['fieldData']['associated']) : ?>
+            <input type='hidden' name='<?php echo $singleTabFieldsData[0]['fieldData']['type2']; ?>_size'
+                   value='<?= count($singleTabFieldsData) - 1; ?>'/>
+        <?php endif;
+    } else { ?>
         <p><?php eT("Nothing to translate on this page"); ?></p><br/>
-    <?php endif; ?>
-    <input type='hidden' name='<?php echo $type; ?>_size' value='<?php echo count($singleTabFieldsData) - 1; ?>'/>
-    <?php if ($singleTabFieldsData[0]['fieldData']['associated']) : ?>
-        <input type='hidden' name='<?php echo $singleTabFieldsData[0]['fieldData']['type2']; ?>_size'
-               value='<?= count($singleTabFieldsData) - 1; ?>'/>
-    <?php endif; ?>
+    <?php } ?>
 </div>
 
 
